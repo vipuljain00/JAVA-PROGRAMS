@@ -137,7 +137,50 @@
 
 
 
-    
+    const initialBall = new Ball(pad(WIDTH / 2 + 23), pad(50), ballRadius, 'red');
+    balls.push(initialBall);
+
+    function drawObstacles() {
+      ctx.fillStyle = 'white';
+      obstacles.forEach(obstacle => {
+        ctx.beginPath();
+        ctx.arc(unpad(obstacle.x), unpad(obstacle.y), obstacle.radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.closePath();
+      });
+    }
+
+    function drawSinks() {
+      ctx.fillStyle = 'green';
+      for (let i = 0; i<sinks.length; i++)  {
+        const sink = sinks[i];
+        ctx.fillRect(sink.x, sink.y - sink.height / 2, sink.width - obstacleRadius * 2, sink.height);
+      };
+    }
+
+    function addBall() {
+      const newBall = new Ball(pad(WIDTH / 2 + 13), pad(50), ballRadius, 'red');
+      balls.push(newBall);
+    }
+
+    document.getElementById('add-ball').addEventListener('click', addBall);
+
+    function draw() {
+      ctx.clearRect(0, 0, WIDTH, HEIGHT);
+      drawObstacles();
+      drawSinks();
+      balls.forEach(ball => {
+        ball.draw();
+        ball.update();
+      });
+    }
+
+    function update() {
+      draw();
+      requestAnimationFrame(update);
+    }
+
+    update();
   </script>
 </body>
 
